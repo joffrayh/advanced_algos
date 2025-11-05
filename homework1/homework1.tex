@@ -1,0 +1,163 @@
+\documentclass[11pt, english]{article}
+
+\title{\textbf{COM3105 Advanced Algorithms} \\ Homework 1}
+\author{Joffray Hargreaves}
+\date{\vspace{-3em}} % Moves the date up or removes it completely
+
+\usepackage[a4paper,
+            bindingoffset=0in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb} % For \emptyset
+\usepackage{bm} % For bold math symbols
+\usepackage{setspace} % For line spacing
+\setstretch{1.1} % Slightly increased line spacing for readability
+
+% Define the answer environment cleanly
+\newenvironment{answer}{\par\vspace{0.5\baselineskip}\noindent\hrule\vspace{0.5\baselineskip}\par\noindent\textbf{Answer:}}{\par\vspace{0.5\baselineskip}\hrule\par\vspace{0.5\baselineskip}}
+
+% --- Document Start ---
+\begin{document}
+\maketitle
+
+\section*{Questions}
+\section{Question 1}
+Find an equivalent CNF representation for the following formula:
+\[
+    \bigvee_{1 \leq i < j \leq n} (x_i \land x_j)
+\]
+Try to make it as short as possible. Prove that your CNF has the smallest possible size. \hfill (3 points)
+
+
+\begin{answer}
+
+\subsubsection*{\textbf{Equivalent CNF}}
+
+The formula is true when at least two of the variables $x_1,\dots,x_n$ are true.\\
+An equivalent CNF:
+\[
+\bigwedge_{i=1}^n \Big( \bigvee_{j\neq i} x_j \Big)
+\]
+\text{i.e. for each } $i$, \text{the clause } $C_{i} = (x_1\vee\cdots\vee x_{i-1}\vee x_{i+1}\vee\cdots\vee x_n).$
+
+\subsubsection*{\textbf{Proof of Minimised Size}}
+
+To prove that this CNF is minimum size we need to know the definition of size:
+
+\begin{align*}
+    \text{size} &= \text{number of clauses} \times \text{number of variables in each clause} \\
+    \intertext{in the CNF provided this is equivalent to:}
+    \text{size} &= n \times (n-1) = n(n-1)
+\end{align*}
+
+\noindent Therefore, we need to prove that the number of clauses cannot be less than $n$ and the number of variables in each clause cannot be less than $n-1$.
+
+\paragraph{1. Number of Clauses:}
+\begin{itemize}
+    \item Each clause $C_i$ corresponds to a variable $x_i$ where:
+    $$C_i = (x_1 \vee \cdots \vee x_{i-1} \vee x_{i+1} \vee \cdots \vee x_n)$$
+    \item If we assume an assignment $x_p = 1$, and all other $x_i = 0$ for $i \neq p$, then all clauses except $C_p$ are satisfied.
+    \item Therefore, the overall CNF is not satisfied, which is correct, since only one variable is true.
+    \item Now, if we assume that we remove a clause, it could be clause $C_p$.
+    \item In this case, the assignment $x_p = 1$ and all other $x_i = 0$ for $i \neq p$ would satisfy all remaining clauses, making the CNF true.
+    \item This is incorrect since only one variable is true, so we have a contradiction.
+    \item Therefore, we cannot remove any clauses. 
+    \item Since there are $n$ variables, there must be at least $n$ clauses.
+\end{itemize}
+
+\paragraph{2. Number of Variables in Each Clause:}
+\begin{itemize}
+    \item Each $x_i$ appears in all the clauses but 1 (the clause $C_i$).
+    \item Assuming a satisfying assignment to our CNF is $x_p = 1$ and $x_q = 1$ and all other $x_i = 0$ for $p \neq q$, then all clauses, including $C_p$ and $C_q$, are satisfied.
+    \item Now if we assume that there is another clause (as well as $C_p$) where $x_p$ is missing, call this $C_r$, then we would have a clause with $(n-1)-1$ variables.
+    \item So, $C_r$ contains all variables, except for $x_p$ and some other variable $x_r$.
+    \item Using this assumption, there exists a scenario where $x_r = x_q$, hence $C_r = C_q$.
+    \item In this scenario there would be no true variable in $C_r$, since neither or the true variables ($x_p$ or $x_q$) are present, making the CNF false.
+    \item Therefore, each clause must contain at least $n-1$ variables.
+\end{itemize}
+
+\medskip
+\noindent As we have proved that both the number of clauses and the number of variables in each clause cannot be less than their respective lower bounds, we have shown that the proposed CNF has the minimum size.
+
+\end{answer}
+
+\section{Question 2}
+Let $F$ be an unsatisfiable formula. Prove that there is a derivation of the empty formula $\bot$ from $F$ using resolution. \hfill (3 points)
+
+\begin{answer}
+
+    \noindent Let $F$ be an unsatisfiable formula in CNF form, i.e. $F = C_1 \land C_2 \land \cdots \land C_m$ where each $C_i$ is a clause.
+
+    \noindent As there is no satisfying assignment for $F$, we can conserve unsatisfiability by also expressing it as:
+
+    \noindent\textit{Note: I don't believe this is strictly allowed, but my idea was to conserve unsatisfiability.}
+    \[
+    F \implies x \land \neg x
+    \]
+
+    \noindent which is a simple unsatisfiable formula.
+    
+    \noindent Defining the resolution rule:
+        \[
+        Resolution = (C \lor x) \land (\neg x \lor D) \implies (C \lor D ) 
+        \]
+
+    \noindent Using the resolution rule on the simplified $F$:
+    \[
+    Res(F) \implies Res((x) \land (\neg x)) \implies \emptyset = \bot
+    \]
+
+    \noindent Therefore, we have proved that we can derive the empty formula $\bot$ from the unsatisfiable formula $F$ using resolution.
+
+\end{answer}
+
+\section{Question 3}
+Recall the idea of using a maximal set of pairwise disjoint clauses to 
+get a non-trivial 3-SAT algorithm from 2-SAT. Extend this idea of $k$-CNFs and give a $k$-SAT algorithm running in time $O(c^n)$ for some $c$. What is the value of $c$? \hfill (4 points)
+
+\begin{answer}
+
+\noindent Remembering the non-trivial 3-SAT algorithm discussed in class, the disjoint collection of variables is defined by the set $T$.
+
+\noindent Here we explain an algorithm to reduce a k-CNF to a $(k-1)$-CNF, by using the set $T$ of disjoint clauses:
+\begin{itemize}
+\item We create the set $T$.
+\item $|T| \le n/k$, as we take one variable from each clause, in the worst case.
+\item We set the variables in $T$ to all possible assignments.
+\item In the worst case, we may have some clauses where all of the clauses' variables are in $T$.
+\item In this case, there are a total of $2^k-1$ possible assignments, as we can ignore the assignment where all variables in a clause are false.
+\item We exponentiate this by $|T|$ to get the total number of assignments to check, which is $(2^k - 1)^{|T|}$.
+\end{itemize}
+\noindent Therefore, the runtime of the algorithm is:
+\[
+    (2^k - 1)^{n/k}
+\]
+
+\noindent We can repeat this process until we reach $2$-CNF, which we can solve in polynomial time.
+
+\noindent As the longest runtime is the first reduction from $k$-CNF to $(k-1)$-CNF, the runtime of the overall algorithm is:
+\[
+O(((2^k - 1)^{1/k})^n)
+\]
+
+\noindent Hence:
+\[c = (2^k - 1)^{1/k}\] 
+
+
+
+\noindent Proof that this is smaller than $2$ for $k \ge 2$:
+\begin{itemize}
+    \item Assume we don't include $-1$ in the numerator.
+    \indent\item We get the equation $c = (2^k)^{1/k} = 2$.
+    \item As this is always equivalent to $2$, including the $-1$ in the numerator will always make $c$ smaller than $2$ for all $k \ge 2$.
+\end{itemize}
+
+\end{answer}
+
+\end{document}
