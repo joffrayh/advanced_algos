@@ -1,0 +1,70 @@
+\documentclass[11pt, english]{article}
+
+\title{\textbf{COM3105 Advanced Algorithms} \\ Homework 2}
+\author{Joffray Hargreaves}
+\date{\vspace{-3em}} % Moves the date up or removes it completely
+
+\usepackage[a4paper,
+            bindingoffset=0in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
+
+\usepackage{amsthm} % For theorem environments
+\usepackage{amsmath} % For advanced math typesetting
+\usepackage{amssymb} % For \emptyset
+\usepackage{bm} % For bold math symbols
+\usepackage{setspace} % For line spacing
+\setstretch{1.1} % Slightly increased line spacing for readability
+
+% --- Custom Environments ---
+
+% Question environment: with bottom rule and marks aligned right
+\newenvironment{question}[1][]{%
+  \par\noindent{\Large\bfseries Question}%
+  \ifx#1\empty\else\hfill{\normalsize\itshape(#1)}\fi%
+  \par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{1\baselineskip}%
+}
+
+% Answer environment: with top and bottom rule, no gap above heading
+\newenvironment{answer}{%
+  \par\noindent\hrule % top line
+  \vspace{0.25\baselineskip}%
+  \noindent{\Large\bfseries Answer}\par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{0.5\baselineskip}%
+  \noindent\hrule\vspace{0.5\baselineskip}%
+  \hrule\hrule
+}
+
+
+% --- Document Start ---
+\begin{document}
+\maketitle
+
+\begin{question}[5 points]
+Given a simple graph $G = (V, E)$ (no loops or multiple edges), 
+consider the following deterministic algorithm: 
+\begin{itemize}
+\item start with an arbitrary partition. 
+\item If moving a vertex from one part to the other increases the number of crossing edges, we will move it. 
+\item We do this until there is no such vertex left.
+\end{itemize}
+
+Why does this algorithm terminate? \\
+What can you say about the number of edges crossing when the algorithm terminates?
+\end{question}
+
+\begin{answer}
+\noindent \textbf{Termination of the Algorithm:} \\
+The algorithm terminates because at each step, we either find a vertex that can be moved to increase the number of crossing edges, or we reach a point where no such vertex exists. In the latter case, we have found a local optimum with respect to the crossing edges, and the algorithm stops.
+
+\noindent \textbf{Number of Crossing Edges at Termination:} \\
+When the algorithm terminates, the number of edges crossing the partition is at a local minimum. However, this does not guarantee that it is the global minimum. The final partition may still have a significant number of crossing edges, depending on the initial configuration and the structure of the graph.
+\end{answer}
+
+\end{document}
