@@ -102,8 +102,43 @@ What can you say about the number of edges crossing when the algorithm terminate
 \end{itemize}
 
 \noindent\textbf{Number of Crossing Edges at Termination:} \\
-As the algorithm doesn't make any clever choices about which vertex to move, it is possible that the algorithm terminates in a local maximum. \\
+As the algorithm doesn't make any clever choices about which vertex to move, 
+it is possible that the algorithm terminates in a local maximum, rather than a global one. \\
+
 However, we can prove that the algorithm terminates with a minimum number of crossing edges. \\
+
+Assume 2 sets $A$ and $B$ form the termination of partitioning of graph $G$. \\
+
+For each vertex $v$ in $A$, let $d_{A}(v)$ be the number of edges from $v$ to other vertices in $A$, and let $d_{B}(v)$ be the number of edges from $v$ to vertices in $B$. \\
+
+$d_{A}(v) \leq d_{B}(v)$
+
+The above must hold by definition, otherwise the algorithm has not terminated.
+
+Similarly, for each vertex $v$ in $B$, let $d_{B}(v)$ be the number of edges from $v$ to other vertices in $B$, and let $d_{A}(v)$ be the number of edges from $v$ to vertices in $A$. \\
+
+$d_{B}(v) \leq d_{A}(v)$
+
+we can summarise these by saying that, for every $v$ in $V$:
+
+$\textit{number of degrees from v crossing partion} \geq \frac{1}{2}d(v)$
+
+where $d(v)$ is the total number of degrees of $v$\\
+
+let $d_{C}(v) = \textit{number of degrees from v crossing partion}$
+
+$d_{C}(v) \geq \frac{1}{2}d(v) \textit{, for all }v \in V$
+
+Summing over all vertices in $V$:
+
+\[
+\sum_{v \in V} d_{C}(v) \geq \frac{1}{2} \sum_{v \in V} d(v)\\
+2*|C| \geq \frac{1}{2} * 2 * |E|\\
+2*|C| \geq |E|\\
+|C| \geq \frac{|E|}{2}
+\]
+
+Thus, when the algorithm terminates, the number of crossing edges is at least half the total number of edges in the graph.
 \end{answer}
 
 \end{document}
