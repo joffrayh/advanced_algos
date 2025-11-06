@@ -19,6 +19,10 @@
 \usepackage{setspace} % For line spacing
 \setstretch{1.1} % Slightly increased line spacing for readability
 
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\diamond$}
+
 % --- Custom Environments ---
 
 % Question environment: with bottom rule and marks aligned right
@@ -55,16 +59,51 @@ consider the following deterministic algorithm:
 \item We do this until there is no such vertex left.
 \end{itemize}
 
-Why does this algorithm terminate? \\
+\noindent Why does this algorithm terminate? \\
 What can you say about the number of edges crossing when the algorithm terminates?
 \end{question}
 
 \begin{answer}
-\noindent \textbf{Termination of the Algorithm:} \\
-The algorithm terminates because at each step, we either find a vertex that can be moved to increase the number of crossing edges, or we reach a point where no such vertex exists. In the latter case, we have found a local optimum with respect to the crossing edges, and the algorithm stops.
+\noindent \textbf{Termination of the Algorithm:}
+\begin{itemize}
+    \item Let $C$ be the set of edges crossing the partition. 
+    \item Let state $i$ be the state of the partition after $i$ moves have been made.
+    \item For each state $i$, we iteratively check a vertex $v_{j}$ (where  $0 \leq j < |V|$) to see if moving it increases $|C|$. 
+    \item If moving a vertex $v_{j}$ increases $|C|$ we make this move and move to state $i+1$ and restart the same process. 
+    \item Checking each state $i$ takes $\leq |V|$ steps to check, where $V$ is finite. 
+    \item As $V$ is finite, for a simple graph, $E$ is aslo finite, so the maximum $|C|$ is $|E|$. 
+    \item Therefore, in the worst case:
+    \begin{itemize}
+        \item at state 0,
+          \begin{itemize}
+              \item $|C|$ = 0 (no edges in partition)
+              \item Adding $v_{|V|-1}$, increases $|C|$ by 1.
+          \end{itemize}
+        \item at state 1,
+          \begin{itemize}
+              \item $|C|$ = 1
+              \item Adding $v_{|V|-1}$, increases $|C|$ by 1.
+          \end{itemize}
+        \item at state i,
+          \begin{itemize}
+                \item $|C|$ = i
+                \item Adding $v_{|V|-1}$, increases $|C|$ by 1.
+          \end{itemize}
+        \item at state $|E|$,
+          \begin{itemize}
+              \item $|C|$ = $|E|$
+              \item Adding $v_{|V|-1}$, cannot increase $|C|$ by 1, as $|C|$ is saturated.
+              \item Algorithm stops as no more edges to add.
+          \end{itemize}
+        \item So $|E|$ edges being added to $C$ and taking $|V|$ checks at each state.
+        \item Hence the runtime is $\mathcal{O}(|E| * |V|)$.
+        \item Both $E$ and $V$ are finite, so the algorithm terminates
+    \end{itemize}
+\end{itemize}
 
-\noindent \textbf{Number of Crossing Edges at Termination:} \\
-When the algorithm terminates, the number of edges crossing the partition is at a local minimum. However, this does not guarantee that it is the global minimum. The final partition may still have a significant number of crossing edges, depending on the initial configuration and the structure of the graph.
+\noindent\textbf{Number of Crossing Edges at Termination:} \\
+As the algorithm doesn't make any clever choices about which vertex to move, it is possible that the algorithm terminates in a local maximum. \\
+However, we can prove that the algorithm terminates with a minimum number of crossing edges. \\
 \end{answer}
 
 \end{document}
