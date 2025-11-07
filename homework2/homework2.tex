@@ -70,8 +70,8 @@ What can you say about the number of edges crossing when the algorithm terminate
     \item Let state $i$ be the state of the partition after $i$ moves have been made.
     \item For each state $i$, we iteratively check a vertex $v_{j}$ (where  $0 \leq j < |V|$) to see if moving it increases $|C|$. 
     \item If moving a vertex $v_{j}$ increases $|C|$ we make this move and move to state $i+1$ and restart the same process. 
-    \item Checking each state $i$ takes $\leq |V|$ steps to check, where $V$ is finite. 
-    \item As $V$ is finite, for a simple graph, $E$ is aslo finite, so the maximum $|C|$ is $|E|$. 
+    \item Checking each state $i$ takes $\mathcal{O}(|V|)$ steps, where $V$ is finite. 
+    \item As $V$ is finite, for a simple graph, $E$ is also finite, so the maximum $|C|$ is $|E|$. 
     \item Therefore, in the worst case:
     \begin{itemize}
         \item at state 0,
@@ -92,53 +92,61 @@ What can you say about the number of edges crossing when the algorithm terminate
         \item at state $|E|$,
           \begin{itemize}
               \item $|C|$ = $|E|$
-              \item Adding $v_{|V|-1}$, cannot increase $|C|$ by 1, as $|C|$ is saturated.
+              \item No movement of vertex can increase $|C|$, as $|C|$ = $|E|$.
               \item Algorithm stops as no more edges to add.
           \end{itemize}
         \item So $|E|$ edges being added to $C$ and taking $|V|$ checks at each state.
         \item Hence the runtime is $\mathcal{O}(|E| * |V|)$.
-        \item Both $E$ and $V$ are finite, so the algorithm terminates
+        \item Both $E$ and $V$ are finite sets, so the algorithm terminates
     \end{itemize}
 \end{itemize}
 
-\noindent\textbf{Number of Crossing Edges at Termination:} \\
-As the algorithm doesn't make any clever choices about which vertex to move, 
-it is possible that the algorithm terminates in a local maximum, rather than a global one. \\
-
-However, we can prove that the algorithm terminates with a minimum number of crossing edges. \\
-
-Assume 2 sets $A$ and $B$ form the termination of partitioning of graph $G$. \\
-
-For each vertex $v$ in $A$, let $d_{A}(v)$ be the number of edges from $v$ to other vertices in $A$, and let $d_{B}(v)$ be the number of edges from $v$ to vertices in $B$. \\
-
-$d_{A}(v) \leq d_{B}(v)$
-
-The above must hold by definition, otherwise the algorithm has not terminated.
-
-Similarly, for each vertex $v$ in $B$, let $d_{B}(v)$ be the number of edges from $v$ to other vertices in $B$, and let $d_{A}(v)$ be the number of edges from $v$ to vertices in $A$. \\
-
-$d_{B}(v) \leq d_{A}(v)$
-
-we can summarise these by saying that, for every $v$ in $V$:
-
-$\textit{number of degrees from v crossing partion} \geq \frac{1}{2}d(v)$
-
-where $d(v)$ is the total number of degrees of $v$\\
-
-let $d_{C}(v) = \textit{number of degrees from v crossing partion}$
-
-$d_{C}(v) \geq \frac{1}{2}d(v) \textit{, for all }v \in V$
-
-Summing over all vertices in $V$:
-
+\noindent\textbf{Number of Crossing Edges at Termination.} \\[0.5em]
+Let the final partition of $G$ be $(A, B)$.  
+For each vertex $v \in V$:
 \[
-\sum_{v \in V} d_{C}(v) \geq \frac{1}{2} \sum_{v \in V} d(v)\\
-2*|C| \geq \frac{1}{2} * 2 * |E|\\
-2*|C| \geq |E|\\
-|C| \geq \frac{|E|}{2}
+d_A(v) = |\{\, u \in A : (u,v) \in E \,\}|, \quad
+d_B(v) = |\{\, u \in B : (u,v) \in E \,\}|.
 \]
 
-Thus, when the algorithm terminates, the number of crossing edges is at least half the total number of edges in the graph.
+\noindent At termination, moving any vertex to the other part does not increase the number of crossing edges.  
+Hence:
+\[
+d_B(v) \ge d_A(v) \quad \text{for all } v \in A, 
+\qquad \text{and} \qquad
+d_A(v) \ge d_B(v) \quad \text{for all } v \in B.
+\]
+This means that for every vertex $v \in V$, at least half of its incident edges cross the partition:
+\[
+\ d_C(v) \ge \tfrac{1}{2} d(v),
+\]
+where,\\
+\indent$d(v) = d_A(v) + d_B(v)$ (i.e. the total degree of $v$),\\
+\indent$d_C(v) = \textit{number of degrees from $v$ crossing the partition}$.\\
+
+\medskip
+\noindent Summing over all vertices gives:
+\[
+\sum_{v \in V} d_C(v) \ge \frac{1}{2} \sum_{v \in V} d(v)
+\]
+Since each crossing edge contributes to $d_C(v)$ for exactly two vertices,
+\[
+\sum_{v \in V} d_C(v) = 2|C|
+\]
+Combining these two expressions:
+\[
+2|C| \ge \frac{1}{2} \sum_{v \in V} d(v) = \frac{1}{2} (2|E|) = |E|
+\]
+Therefore,
+\[
+|C| \ge \frac{|E|}{2}
+\]
+
+\medskip
+\noindent
+\textbf{Conclusion.}  
+When the algorithm terminates, the resulting partition has at least half of all edges crossing between the two parts.  
+Although this partition may be only a local maximum, it guarantees that at least $\tfrac{|E|}{2}$ edges are cut.
 \end{answer}
 
 \end{document}
