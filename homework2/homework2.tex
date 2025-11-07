@@ -26,8 +26,10 @@
 % --- Custom Environments ---
 
 % Question environment: with bottom rule and marks aligned right
+\newcounter{questionnum}
 \newenvironment{question}[1][]{%
-  \par\noindent{\Large\bfseries Question}%
+  \stepcounter{questionnum}%
+  \par\noindent{\Large\bfseries Question \thequestionnum}%
   \ifx#1\empty\else\hfill{\normalsize\itshape(#1)}\fi%
   \par\vspace{0.25\baselineskip}\noindent\ignorespaces
 }{%
@@ -120,6 +122,7 @@ This means that for every vertex $v \in V$, at least half of its incident edges 
 \[
 \ d_C(v) \ge \tfrac{1}{2} d(v),
 \]
+
 where,\\
 \indent$d(v) = d_A(v) + d_B(v)$ (i.e. the total degree of $v$),\\
 \indent$d_C(v) = \textit{number of degrees from $v$ crossing the partition}$.\\
@@ -149,4 +152,76 @@ When the algorithm terminates, the resulting partition has at least half of all 
 Although this partition may be only a local maximum, it guarantees that at least $\tfrac{|E|}{2}$ edges are cut.
 \end{answer}
 
+\begin{question}[5 points]
+(MAX-SAT). Given a 3-CNF $F$ where every clause has width exactly 3, 
+let $OPT(F)$ be the maximum number of clauses in $F$ that can be satisfied 
+simultaneously, i.e., it is the maximum integer $m$ such that there is an 
+assignment to the variables that satisfies $m$ clauses. \\
+Give a randomised algorithm that produces an assignment that satisfies 
+at least $\frac{7}{8} OPT(F)$ clauses on expectation. \\
+You need to state the algorithm and give an analysis.
+\end{question}
+
+\begin{answer}
+\textbf{Algorithm:}
+  \begin{enumerate}
+    \item  For each variable $x_i$ in $F$, assign it a value of 1 with probability $\frac{1}{2}$, and 0 with probability $\frac{1}{2}$.
+    \item Evaluate each clause in $F$. If at least one literal in the clause is satisfied by the current assignment, count the clause as satisfied.
+    \item Return the current assignment and the count of satisfied clauses.
+  \end{enumerate}
+
+\noindent\textbf{Analysis:}
+
+\noindent Let $C$ be the set of all clauses in $F$.\\
+\noindent Let $c$ be any clause in $C$. \\
+\noindent The probability that any clause $c$ is satisfied using the random algorithm:
+\begin{itemize}
+\item Each clause has exactly 3 literals.
+\item The probability that a specific literal is true is $\frac{1}{2}$.
+\item For the clause to be unsatisfied, all 3 literals must be false.
+\item The probability that the clause is unsatisfied is $\left(\frac{1}{2}\right)^3 = \frac{1}{8}$.
+\item Therefore, the probability that the clause is satisfied is $1 - \frac{1}{8} = \frac{7}{8}$.
+\end{itemize}
+
+\noindent Let $X$ be the random variable representing the number of satisfied 
+clauses in $F$ under the random assignment.
+
+\noindent Using the linearity of expectation:
+\[
+\mathbb{E}[X] = \sum_{c \in C} \mathbb{E}[X_{c}]
+\]
+
+\noindent Where $X_{c}$ is a random variable indicating whether clause $c$ is satisfied.\\
+\noindent Expectation for a clause $c$ in $C$:
+\begin{align*}
+\mathbb{E}[X_{c}] &= \sum_{x \in \{0,1\}} x \cdot P(X_{c} = x) \\
+\mathbb{E}[X_{c}] &= 1 \cdot P(c \text{ is satisfied}) + 0 \cdot P(c \text{ is not satisfied}) \\
+\mathbb{E}[X_{c}] &= P(c \text{ is satisfied}) = \frac{7}{8} \qquad \textit{(from above)}
+\end{align*}
+
+\noindent Using this in the expectation of $X$:
+
+\begin{align*}
+\mathbb{E}[X] &= \sum_{c \in C} \mathbb{E}[X_{c}] \\
+\mathbb{E}[X] &= \sum_{c \in C} \frac{7}{8} \\
+\mathbb{E}[X] &= |C| \cdot \frac{7}{8} \\
+\end{align*}
+
+\noindent This means that on average, the random assignment satisfies $\frac{7}{8}$ of all clauses in $F$. \\
+\noindent Let $OPT(F)$ be the maximum number of clauses that can be 
+satisfied simultaneously in $F$:
+\[
+|C| \geq OPT(F)
+\]
+\noindent Therefore:
+\begin{align*}
+  \mathbb{E}[X] &= |C| \cdot \frac{7}{8} \geq OPT(F)\cdot \frac{7}{8}\\
+  \mathbb{E}[X] &\geq \frac{7}{8} OPT(F)
+\end{align*}
+
+\medskip
+\noindent
+\textbf{Conclusion.}  
+The algorithm provided produces an assignment that satisfies at least $\frac{7}{8} OPT(F)$ clauses on expectation.
+\end{answer}
 \end{document}

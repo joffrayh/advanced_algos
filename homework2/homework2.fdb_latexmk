@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1762504930.48314 "/home/joffray/repos/uni/algos/homework2/homework2.tex" "homework2.pdf" "homework2" 1762504930.76862 0
-  "/home/joffray/repos/uni/algos/homework2/homework2.tex" 1762504930.09381 5265 e0de6701de5675959dd04dbbc912d278 ""
+["pdflatex"] 1762517308.34906 "/home/joffray/repos/uni/algos/homework2/homework2.tex" "homework2.pdf" "homework2" 1762517308.77274 0
+  "/home/joffray/repos/uni/algos/homework2/homework2.tex" 1762517307.66738 8336 59f702c425a9a00f6283819abd31247d ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1755987285 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1755987285 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1755987285 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -50,6 +50,7 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1755987285 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1755987285 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1755987285 37944 359e864bd06cde3b1cf57bb20757fb06 ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1755987285 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/share/texmf-dist/tex/generic/iftex/iftex.sty" 1755987285 7984 7dbb9280f03c0a315425f1b4f35d43ee ""
   "/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty" 1755987285 1057 525c2192b5febbd8c1f662c9468335bb ""
   "/usr/share/texmf-dist/tex/latex/amscls/amsthm.sty" 1755987285 12594 0d51ac3a545aaaa555021326ff22a6cc ""
@@ -72,8 +73,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1755987285 42087 b0f9697c952c8f5a8eede4134282cb0d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1761141994 30070 2c390b00126b1036e8876b6c3ea4d747 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1761142042 2008250 3386cc0fae97265c576db51151506749 ""
-  "homework2.aux" 1762504930.71281 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "homework2.tex" 1762504930.09381 5265 e0de6701de5675959dd04dbbc912d278 ""
+  "homework2.aux" 1762517308.68426 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
+  "homework2.tex" 1762517307.66738 8336 59f702c425a9a00f6283819abd31247d ""
   (generated)
   "homework2.aux"
   "homework2.log"
