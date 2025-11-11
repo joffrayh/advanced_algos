@@ -86,7 +86,7 @@ What can you say about the number of edges crossing when the algorithm terminate
               \item $|C|$ = 1
               \item Adding $v_{|V|-1}$, increases $|C|$ by 1.
           \end{itemize}
-        \item at state i,
+        \item at state i (where $1 < i < |E|$),
           \begin{itemize}
                 \item $|C|$ = i
                 \item Adding $v_{|V|-1}$, increases $|C|$ by 1.
@@ -103,13 +103,20 @@ What can you say about the number of edges crossing when the algorithm terminate
     \end{itemize}
 \end{itemize}
 
-\noindent\textbf{Number of Crossing Edges at Termination.} \\[0.5em]
+\noindent\textbf{Number of Crossing Edges at Termination:} \\[0.5em]
 Let the final partition of $G$ be $(A, B)$.  
 For each vertex $v \in V$:
 \[
 d_A(v) = |\{\, u \in A : (u,v) \in E \,\}|, \quad
-d_B(v) = |\{\, u \in B : (u,v) \in E \,\}|.
+d_B(v) = |\{\, u \in B : (u,v) \in E \,\}|
 \]
+
+{%
+\centering
+\textit{(i.e. number of degrees from $v$ to part A and part B respectively)}\par
+}
+
+\vspace{1em}
 
 \noindent At termination, moving any vertex to the other part does not increase the number of crossing edges.  
 Hence:
@@ -132,13 +139,17 @@ where,\\
 \[
 \sum_{v \in V} d_C(v) \ge \frac{1}{2} \sum_{v \in V} d(v)
 \]
-Since each crossing edge contributes to $d_C(v)$ for exactly two vertices,
+Since each crossing edge contributes to $d_C(v)$ for two vertices,
 \[
 \sum_{v \in V} d_C(v) = 2|C|
 \]
-Combining these two expressions:
+Similarly, since each edge contributes to $d(v)$ for two vertices,
 \[
-2|C| \ge \frac{1}{2} \sum_{v \in V} d(v) = \frac{1}{2} (2|E|) = |E|
+\sum_{v \in V} d(v) = 2|E|
+\]
+Combining these expressions:
+\[
+\sum_{v \in V} d_C(v) =2|C| \ge \frac{1}{2} \sum_{v \in V} d(v) = \frac{1}{2} (2|E|) = |E|
 \]
 Therefore,
 \[
@@ -151,7 +162,7 @@ Therefore,
 When the algorithm terminates, the resulting partition has at least half of all edges crossing between the two parts.  
 Although this partition may be only a local maximum, it guarantees that at least $\tfrac{|E|}{2}$ edges are cut.
 \end{answer}
-
+\vspace{1em}
 \begin{question}[5 points]
 (MAX-SAT). Given a 3-CNF $F$ where every clause has width exactly 3, 
 let $OPT(F)$ be the maximum number of clauses in $F$ that can be satisfied 
