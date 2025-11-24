@@ -1,0 +1,93 @@
+\documentclass[11pt, english]{article}
+
+\title{\textbf{COM3105 Advanced Algorithms} \\ Homework 3}
+\author{Joffray Hargreaves}
+\date{\vspace{-3em}} % Moves the date up or removes it completely
+
+\usepackage[a4paper,
+            bindingoffset=0in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
+
+\usepackage{amsthm} % For theorem environments
+\usepackage{amsmath} % For advanced math typesetting
+\usepackage{amssymb} % For \emptyset
+\usepackage{bm} % For bold math symbols
+\usepackage{setspace} % For line spacing
+\setstretch{1.1} % Slightly increased line spacing for readability
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\diamond$}
+
+% --- Custom Environments ---
+
+% Question environment: with bottom rule and marks aligned right
+\newcounter{questionnum}
+\newenvironment{question}[1][]{%
+  \stepcounter{questionnum}%
+  \par\noindent{\Large\bfseries Question \thequestionnum}%
+  \ifx#1\empty\else\hfill{\normalsize\itshape(#1)}\fi%
+  \par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{1\baselineskip}%
+}
+
+% Answer environment: with top and bottom rule, no gap above heading
+\newenvironment{answer}{%
+  \par\noindent\hrule % top line
+  \vspace{0.25\baselineskip}%
+  \noindent{\Large\bfseries Answer}\par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{0.5\baselineskip}%
+  \noindent\hrule\vspace{0.5\baselineskip}%
+  \hrule\hrule
+}
+
+
+% --- Document Start ---
+\begin{document}
+
+\setlength{\parindent}{0pt}  % remove indentation
+\setlength{\parskip}{0.9em}    % add space between paragraphs
+
+\maketitle
+
+\begin{question}[4 points]
+
+Consider a stream $a_{1}, \ldots, a_{m}$ where each $a_{i} \in \{1, \ldots, n\}$.
+
+Give a deterministic streaming algorithm that maintains the sum $\sum a_{1} + \ldots + a_{m}$ using\\ 
+$\mathcal{O} \left( \log m + \log n \right)$ space.
+
+\end{question}
+
+\begin{answer}
+  
+answer here
+
+\end{answer}
+
+\vspace{1em}
+
+\begin{question}[6 points]
+
+Consider a stream $a_{1}, \ldots, a_{m}$ where each $a_{i} \in \{1, \ldots, n\}$.
+
+Give a randomised streaming algorithm which approximates the sum $\sum a_{1} + \ldots + a_{m}$ using\\
+$\mathcal{O} \left( \log\log m + \log n \right)$ space.
+
+Give a rigorous analysis of the algorithm in terms of its quality and space complexity.
+
+\end{question}
+
+\begin{answer}
+
+answer here
+
+\end{answer}
+
+\end{document}
