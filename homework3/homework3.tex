@@ -52,7 +52,7 @@
 \begin{document}
 
 \setlength{\parindent}{0pt}  % remove indentation
-\setlength{\parskip}{0.9em}    % add space between paragraphs
+% \setlength{\parskip}{0.9em}    % add space between paragraphs
 
 \maketitle
 
@@ -60,18 +60,50 @@
 
 Consider a stream $a_{1}, \ldots, a_{m}$ where each $a_{i} \in \{1, \ldots, n\}$.
 
-Give a deterministic streaming algorithm that maintains the sum $\sum a_{1} + \ldots + a_{m}$ using\\ 
+Give a deterministic streaming algorithm that maintains the sum $ a_{1} + \ldots + a_{m}$ using\\ 
 $\mathcal{O} \left( \log m + \log n \right)$ space.
 
 \end{question}
 
 \begin{answer}
   
-answer here
+\textbf{Algorithm:}
+
+Let $S_{i}$ be the sum of the the stream at step $i$, for $i = 0, \ldots, m$.
+
+\begin{itemize}
+  \item Initialise $S_{0} = 0$.
+  \item For each incoming element $a_{i}$, get the sum at time step $i$ by $S_{i} = S_{i-1} + a_{i}$
+  \item At any point, the current sum of the stream is given by $S_{i}$.
+  \item After processing all $m$ elements, $S_{i} = S_{m}$, i.e. the sum of all elements $a_1, \ldots, a_m$.
+\end{itemize}
+
+\textbf{Space Complexity Analysis:}
+
+In the worst case, the value of any element $a_{i}$ is $n$.
+
+So we consider the following worst case run of the algorithm, where each $a_{i} = n$:
+\begin{itemize}
+  \item Initially, $S_{0} = 0$,
+  \item $S_{1} = S_{0} + n = n$ ,
+  \item $S_{2} = S_{1} + n = n + n = 2 \times n$ ,
+  \item $\ldots$
+  \item $S_{i} = S_{i-1} + n = i \times n$ ,
+  \item $\ldots$
+  \item $S_{m} = S_{m-1} + n = m \times n$
+\end{itemize}
+
+Therefore, the maximum value that $S_{i}$ can take is $m \times n$.
+
+To store $m \times n$, we need $\log (m \times n) = \log m + \log n$ bits.
+
+Hence, the space complexity of the algorithm is $\mathcal{O}(\log m + \log n)$.
 
 \end{answer}
 
 \vspace{1em}
+
+\newpage
 
 \begin{question}[6 points]
 
