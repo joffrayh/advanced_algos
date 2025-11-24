@@ -118,7 +118,139 @@ Give a rigorous analysis of the algorithm in terms of its quality and space comp
 
 \begin{answer}
 
-answer here
+\textbf{Algorithm:}
+
+I use an approach which uses the same concept as Morris's algorithm.
+
+We keep a counter which has value $X_i$ at time step $i$.
+
+\begin{itemize}
+  \item \textbf{Initialisation:} Start with the counter $X_0 = 0$.
+  \item \textbf{Processing:} For each integer $a_i$ in the stream:
+  \begin{itemize}
+      \item We treat the value $a_i$ as a sequence of $a_i$ separate increments of 1 (i.e. if $a_i = 4$ we consider it as $1, 1, 1, 1$).
+      \item Repeat the following step $a_i$ times:
+      \begin{itemize}
+        \item with probability $\frac{1}{2^{X}}$, increment the counter $X$ by 1 (i.e., $X \leftarrow X + 1$).
+        \item with probability $1 - \frac{1}{2^{X}}$, do nothing.
+      \end{itemize}
+  \end{itemize}
+  \item \textbf{Output:} When asked for the sum (i.e. after processing $m$ elements), output $\hat{S} = 2^X - 1$, where $\hat{S}$ is an estimate of the true sum $S$.
+\end{itemize}
+
+\textbf{Expectation Analysis:}
+
+Let $S_i$ be the true sum of all elements up to step $i$, and $X_i$ be the value of the counter at step $i$. 
+
+We prove by induction that $\mathbb{E}[2^{X_i}] = S_i + 1$.
+
+\begin{itemize}
+    \item \textbf{Base Case:} Initially $S_0=0$ and $X_0=0$. $\mathbb{E}[2^0] = 1$. Since $S_0+1 = 0+1=1$, the base case holds.
+    \item \textbf{Inductive Case:} 
+    \begin{itemize}
+        \item Assume $\mathbb{E}[2^{X_{i-1}}] = S_{i-1} + 1$ holds before an update.
+        \item Consider a single increment from $a_i$ (adding 1 to the sum). 
+        \item Let $X_{i}$ be the value of the counter after this update.
+        \begin{itemize}
+            \item With probability $1/2^{X_{i-1}}$, $X_{i}$ becomes $X_{i-1}+1$. Hence, $2^{X_{i}}$ becomes $2^{X_{i-1}+1}$.
+            \item With probability $1 - 1/2^{X_{i-1}}$, $X_{i}$ stays $X_{i-1}$. Hence, $2^{X_{i}}$ stays $2^{X_{i-1}}$.
+        \end{itemize}
+        \item Expectation of $2^{X_{i}}$ given $X_{i-1}$:
+        \begin{itemize}
+          \item $\mathbb{E}[2^{X_{i}}] = \sum_{j=0}^{\infty} \mathbb{P}[X_{i-1} = j] \cdot \mathbb{E}[2^{X_i} \mid X_{i-1} = j]$
+        \end{itemize}
+        \item We can simplify the left side:
+        \begin{itemize}
+          \item $\mathbb{E}[2^{X_i} \mid X_{i-1} = j]$
+          \item $ = \mathbb{P}(\text{we increase the counter}) \times 2^{j+1} + \mathbb{P}(\text{we do not increase the counter}) \times 2^j$
+          \item $ = \frac{1}{2^j} \cdot 2^{j+1} + \left(1 - \frac{1}{2^j}\right) \cdot 2^j$
+          \item $ = 2 + 2^j - 1$
+          \item $ = 2^j + 1$
+        \end{itemize}
+        \item We then substitute this into the expectation:
+        \begin{itemize}
+          \item $\mathbb{E}[2^{X_i}] = \sum_{j=0}^{\infty} \mathbb{P}[X_{i-1} = j] \cdot (2^j + 1)$
+          \item $ = \sum_{j=0}^{\infty} \mathbb{P}[X_{i-1} = j] \cdot 2^j + \sum_{j=0}^{\infty} \mathbb{P}[X_{i-1} = j]$
+          \item $ = \mathbb{E}[2^{X_{i-1}}] + 1$
+        \end{itemize}
+        \item By the inductive hypothesis above, $\mathbb{E}[2^{X_{i-1}}] = S_{i-1} + 1$.
+        \item Therefore, $\mathbb{E}[2^{X_i}] = (S_{i-1} + 1) + 1 = S_i + 1$.
+        \item So the claim holds for $S_i$ after one increment.
+    \end{itemize}
+\end{itemize}
+
+Therefore, after processing all $m$ elements, we have $\mathbb{E}[2^{X_m}] = S_m + 1$.
+
+\textbf{Quality Analysis:}
+
+First we get the variance of $2^{X_m}$.
+
+\textit{Note:} I used https://madscience.ucsd.edu/2020/notes/lec4and5.pdf for the $\mathbb{E}[2^{2 \cdot X_m}]$ simplification step.
+
+\begin{align*}
+\text{Var}[2^{X_m}] &= \mathbb{E}[2^{2 \cdot X_m}] - (\mathbb{E}[2^{X_m}])^2 \\
+&= \frac{3}{2} S_m^2 + \frac{3}{2} S_m + 1 - (S_m + 1)^2 \\
+&= \frac{3}{2} S_m^2 + \frac{3}{2} S_m + 1 - (S_m^2 + 2 S_m + 1) \\
+&= \frac{S_m^2}{2} - \frac{S_m}{2} \leq \frac{S_m^2}{2}
+\end{align*}
+
+We note our estimate of the sum as $\hat{S} = 2^{X_m} - 1$.
+
+Chebyshev's inequality is defined as:
+\[
+\mathbb{P}(|X - \mu| > \lambda) \leq \frac{\text{Var}(X)}{\lambda^2}
+\]
+
+Applying Chebyshev's inequality to our estimate $\hat{S}$:
+
+\[
+\mathbb{P}(|\hat{S} - S_m| \geq \epsilon S_m) \leq \frac{\text{Var}[\hat{S}]}{(\epsilon S_m)^2} = \frac{\text{Var}[2^{X_m}]}{(\epsilon S_m)^2} \leq \frac{\frac{S_m^2}{2}}{\epsilon^2 S_m^2} = \frac{1}{2 \epsilon^2}
+\]
+
+Therefore, the probability that our estimate $\hat{S}$ deviates from the true sum $S_m$ by at least a factor of $\epsilon S_m$ is at most $\frac{1}{2 \epsilon^2}$.
+
+
+This only holds for $\epsilon > \frac{1}{\sqrt{2}}$.
+
+To increase this bound, we can run $k$ independent copies of the algorithm in parallel and take the median of their sums.
+
+\textbf{Space Complexity Analysis:}
+
+In the worst case, all elements $a_i = n$.
+
+So the maximum possible sum is $S_{max} = m \cdot n$.
+
+The counter $X$ is kept, where $\hat{S} = 2^X - 1$ on expectation, so the largest $X$ is
+\[
+X_{\max} = \log_2(S_{\max}) = \log_2(m n).
+\]
+To store $X$ in this worst case, the number of bits required is:
+\[
+\log_2(X_{\max}) = \log_2(\log_2(m n)).
+\]
+Therefore, the expected space required for the counter $X$ is:
+\[
+\mathcal{O}\left(\log \log m + \log \log n\right).
+\]
+
+
+As well as this we need to space to process $a_i$, as we iterate through it in increments of 1.
+In the worst case, each $a_i = n$.
+To store $a_i$ as we iterate through it in this worst case, we need $\mathcal{O}(\log n)$ bits.
+
+Combining these two space complexities:
+
+\[
+\mathcal{O}\left(\log \log m + \log \log n\right) + \mathcal{O}(\log n) = \mathcal{O}\left(\log \log m + \log \log n + \log n\right).
+\]
+
+As $\log n$ is exponentially larger tha $\log \log n$, we simplify to:
+
+\[
+\mathcal{O}\left(\log\log m + \log n\right).
+\]
+
+Hence, the space complexity of the algorithm is $\mathcal{O}\left(\log\log m + \log n\right)$.
 
 \end{answer}
 

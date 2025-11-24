@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763997989.0592 "/home/joffray/repos/uni/algos/homework3/homework3.tex" "homework3.pdf" "homework3" 1763997989.91044 0
-  "/home/joffray/repos/uni/algos/homework3/homework3.tex" 1763997988.52257 3578 75564c60bca65975f4bf0ab8a7cfebac ""
+["pdflatex"] 1764014711.80275 "/home/joffray/repos/uni/algos/homework3/homework3.tex" "homework3.pdf" "homework3" 1764014712.57794 0
+  "/home/joffray/repos/uni/algos/homework3/homework3.tex" 1764014711.31488 9254 5382b47716312cb2fca50d856be7658c ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1755987285 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1755987285 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1755987285 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -36,14 +36,18 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1755987285 32080 340ef9bf63678554ee606688e7b5339d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1755987285 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1755987285 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb" 1755987285 37166 8ab3487cbe3ab49ebce74c29ea2418db ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1755987285 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1755987285 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1755987285 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1755987285 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1755987285 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1755987285 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1755987285 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1755987285 32587 1788b0c1c5b39540c96f5e42ccd6dae8 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1755987285 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1755987285 37944 359e864bd06cde3b1cf57bb20757fb06 ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1755987285 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/share/texmf-dist/tex/generic/iftex/iftex.sty" 1755987285 7984 7dbb9280f03c0a315425f1b4f35d43ee ""
   "/usr/share/texmf-dist/tex/generic/iftex/ifvtex.sty" 1755987285 1057 525c2192b5febbd8c1f662c9468335bb ""
   "/usr/share/texmf-dist/tex/latex/amscls/amsthm.sty" 1755987285 12594 0d51ac3a545aaaa555021326ff22a6cc ""
@@ -66,8 +70,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1755987285 42087 b0f9697c952c8f5a8eede4134282cb0d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1763725950 5308561 91d426a80ca2b7cbabcac208f8a170f6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1763725866 2008249 1f69e1550173427bfeaa634930d75c02 ""
-  "homework3.aux" 1763997989.77196 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "homework3.tex" 1763997988.52257 3578 75564c60bca65975f4bf0ab8a7cfebac ""
+  "homework3.aux" 1764014712.50515 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
+  "homework3.tex" 1764014711.31488 9254 5382b47716312cb2fca50d856be7658c ""
   (generated)
   "homework3.aux"
   "homework3.log"
