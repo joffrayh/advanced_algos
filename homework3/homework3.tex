@@ -78,6 +78,10 @@ Let $S_{i}$ be the sum of the the stream at step $i$, for $i = 0, \ldots, m$.
   \item After processing all $m$ elements, $S_{i} = S_{m}$, i.e. the sum of all elements $a_1, \ldots, a_m$.
 \end{itemize}
 
+This algorithm correctly maintains the sum of the stream as each incoming element is added to the current sum.
+
+\bigskip
+
 \textbf{Space Complexity Analysis:}
 
 In the worst case, the value of any element $a_{i}$ is $n$.
@@ -138,6 +142,8 @@ We keep a counter which has value $X_i$ at time step $i$.
   \item \textbf{Output:} When asked for the sum (i.e. after processing $m$ elements), output $\hat{S} = 2^X - 1$, where $\hat{S}$ is an estimate of the true sum $S$.
 \end{itemize}
 
+\bigskip
+
 \textbf{Expectation Analysis:}
 
 Let $S_i$ be the true sum of all elements up to step $i$, and $X_i$ be the value of the counter at step $i$. 
@@ -159,7 +165,7 @@ We prove by induction that $\mathbb{E}[2^{X_i}] = S_i + 1$.
         \begin{itemize}
           \item $\mathbb{E}[2^{X_{i}}] = \sum_{j=0}^{\infty} \mathbb{P}[X_{i-1} = j] \cdot \mathbb{E}[2^{X_i} \mid X_{i-1} = j]$
         \end{itemize}
-        \item We can simplify the left side:
+        \item We can simplify the right side:
         \begin{itemize}
           \item $\mathbb{E}[2^{X_i} \mid X_{i-1} = j]$
           \item $ = \mathbb{P}(\text{we increase the counter}) \times 2^{j+1} + \mathbb{P}(\text{we do not increase the counter}) \times 2^j$
@@ -180,6 +186,8 @@ We prove by induction that $\mathbb{E}[2^{X_i}] = S_i + 1$.
 \end{itemize}
 
 Therefore, after processing all $m$ elements, we have $\mathbb{E}[2^{X_m}] = S_m + 1$.
+
+\bigskip
 
 \textbf{Quality Analysis:}
 
@@ -213,6 +221,8 @@ Therefore, the probability that our estimate $\hat{S}$ deviates from the true su
 This only holds for $\epsilon > \frac{1}{\sqrt{2}}$.
 
 To increase this bound, we can run $k$ independent copies of the algorithm in parallel and take the median of their sums.
+
+\bigskip
 
 \textbf{Space Complexity Analysis:}
 

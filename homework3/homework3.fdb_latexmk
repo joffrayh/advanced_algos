@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1764014711.80275 "/home/joffray/repos/uni/algos/homework3/homework3.tex" "homework3.pdf" "homework3" 1764014712.57794 0
-  "/home/joffray/repos/uni/algos/homework3/homework3.tex" 1764014711.31488 9254 5382b47716312cb2fca50d856be7658c ""
+["pdflatex"] 1764059958.37706 "/home/joffray/repos/uni/algos/homework3/homework3.tex" "homework3.pdf" "homework3" 1764059959.38687 0
+  "/home/joffray/repos/uni/algos/homework3/homework3.tex" 1764059957.37196 9407 dbc519586bd93934c017586c54177585 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1755987285 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1755987285 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy8.tfm" 1755987285 1120 200be8b775682cdf80acad4be5ef57e4 ""
@@ -70,8 +70,8 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1755987285 42087 b0f9697c952c8f5a8eede4134282cb0d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1763725950 5308561 91d426a80ca2b7cbabcac208f8a170f6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1763725866 2008249 1f69e1550173427bfeaa634930d75c02 ""
-  "homework3.aux" 1764014712.50515 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
-  "homework3.tex" 1764014711.31488 9254 5382b47716312cb2fca50d856be7658c ""
+  "homework3.aux" 1764059959.28097 32 c81c40425fbb5e93b90fba65da0b5e61 "pdflatex"
+  "homework3.tex" 1764059957.37196 9407 dbc519586bd93934c017586c54177585 ""
   (generated)
   "homework3.aux"
   "homework3.log"
