@@ -329,12 +329,41 @@ This space depends only on $\epsilon$ and $\delta$ (and $\log n$, but this is no
 
 \newpage
 
-\begin{question}[5 points]
-question here
+\begin{question}[2 points]
+An independent set in a graph is a set of vertices which does not contain any edge. The Maximum Independent Set (MIS) problem is the problem of finding an independent set of maximum size in a given graph.
+
+Write down an integer program which solves MIS exactly. (2 points)
 \end{question}
 
 \begin{answer}
-answer here
+
+Let \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges of the graph.
+
+For each vertex \( v \in V \), define a binary variable \( x_v \) such that:
+\[
+x_v =
+\begin{cases}
+1 & \text{if vertex } v \text{ is included in the independent set}, \\
+0 & \text{otherwise}
+\end{cases}
+\]
+
+\textbf{Constraints:} 
+
+\[
+\forall v \in V : \qquad x_v \in \{0, 1\}
+\]
+
+\[
+\forall (u, v) \in E : \qquad x_u + x_v \leq 1
+\]
+
+\textbf{Objective Function:}
+
+\[
+\text{Maximize } \sum_{v \in V} x_v
+\]
+
 \end{answer}
 
 \end{document}
