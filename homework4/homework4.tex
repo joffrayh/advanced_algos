@@ -1,0 +1,368 @@
+\documentclass[11pt, english]{article}
+
+\title{\textbf{COM3105 Advanced Algorithms} \\ Homework 4}
+\author{Joffray Hargreaves}
+\date{\vspace{-3em}} % Moves the date up or removes it completely
+
+\usepackage[a4paper,
+            bindingoffset=0in,
+            left=1in,
+            right=1in,
+            top=1in,
+            bottom=1in,
+            footskip=.25in]{geometry}
+
+\usepackage{amsthm} % For theorem environments
+\usepackage{amsmath} % For advanced math typesetting
+\usepackage{amssymb} % For \emptyset
+\usepackage{bm} % For bold math symbols
+\usepackage{setspace} % For line spacing
+\setstretch{1.1} % Slightly increased line spacing for readability
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\diamond$}
+
+% --- Custom Environments ---
+
+% Question environment: with bottom rule and marks aligned right
+\newcounter{questionnum}
+\newenvironment{question}[1][]{%
+  \stepcounter{questionnum}%
+  \par\noindent{\Large\bfseries Question \thequestionnum}%
+  \ifx#1\empty\else\hfill{\normalsize\itshape(#1)}\fi%
+  \par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{1\baselineskip}%
+}
+
+% Answer environment: with top and bottom rule, no gap above heading
+\newenvironment{answer}{%
+  \par\noindent\hrule % top line
+  \vspace{0.25\baselineskip}%
+  \noindent{\Large\bfseries Answer}\par\vspace{0.25\baselineskip}\noindent\ignorespaces
+}{%
+  \par\vspace{0.5\baselineskip}%
+  \noindent\hrule\vspace{0.5\baselineskip}%
+  \hrule\hrule
+}
+
+
+% --- Document Start ---
+\begin{document}
+
+\setlength{\parindent}{0pt}  % remove indentation
+% \setlength{\parskip}{0.9em}    % add space between paragraphs
+
+\maketitle
+
+\begin{question}[5 points]
+Consider a stream \( a_1, a_2, \dots, a_m \), where each \( a_i \in [n] \).
+
+Design and analyze a streaming algorithm that, given a query 
+
+\( S \subseteq [n] \), 
+
+outputs an estimate of what fraction of items in the stream belong to \( S \) within additive error \( \epsilon \) with probability at least \( \delta \). 
+
+The space used by the algorithm should only depend on \( \epsilon \) and \( \delta \). 
+
+Note that \( S \) is given only at query time (not in advance).
+
+\end{question}
+
+\begin{answer}
+
+The intuition behind my answer is to use reservoir sampling with $k$ samples to estimate the fraction of streamed elements in $S$.
+
+\textbf{Algorithm:}
+
+
+\begin{itemize}
+    \item \textbf{Initialisation:}  
+    Choose a sample size $k$ based on the parameters:
+    \[
+        k \ge \frac{1}{4\,\epsilon^{2}\,\delta}
+    \]
+
+    Where $\epsilon$ is the chosen additive error and $\delta$ is the probability of failure.
+    Initialise an empty set (the reservoir) $R$ that stores $k$ items.
+    Initialise a counter $C = 0$ to track the number of items seen so far.
+
+    \item \textbf{Processing the stream:}  
+    For each incoming element $a_i$, where $i$ is the index of the element in the stream (starting from 1):
+      \begin{itemize}
+        \item If $C < k$, insert $a_i$ into $R$, and increment $C$ by 1.
+        \item Otherwise:
+          \begin{itemize}
+          \item Include $a_i$ in the reservoir $R$ with probability $k/i$.
+          \item If included, replace a uniformly random element from $R$.
+          \item Increment $C$ by 1.
+          \end{itemize}
+      \end{itemize}
+    This is standard reservoir sampling.
+
+    \item \textbf{Query:}  
+    When the set $S$ is given, compute the estimate:
+    \[
+        \widehat{p} = \frac{1}{k} \sum_{x \in R} \mathbf{1}\{x \in S\},
+    \]
+    and output $\widehat{p}$ as the estimate of the true fraction.
+
+\end{itemize}
+
+\bigskip
+
+\textbf{Expectation of the Estimator:}
+
+Let $p$ be the true fraction of stream elements that belong to $S$:
+\[
+    p = \frac{1}{m} \, |\{ i : a_i \in S \}|
+\]
+
+After reservoir sampling has finished, the reservoir contains
+$k$ uniformly random elements from the stream.  
+For each $j = 1, \ldots, k$, define the indicator variable
+\[
+    X_j = \mathbf{1}\{ R_j \in S \},
+\],
+where $R_j$ is the $j$-th sampled item.
+
+Because reservoir sampling picks each stream element with equal probability,
+each $R_j$ is distributed exactly as a uniformly random stream element.
+So,
+\[
+    \mathbb{P}(R_j \in S) = p,
+\]
+and therefore
+\[
+    \mathbb{E}[X_j] = 1 \cdot p + 0 \cdot (1-p) = p
+\]
+
+The estimator for the fraction is
+\[
+    \widehat{p}
+    = \frac{1}{k} \sum_{j=1}^k X_j
+\]
+
+Using linearity of expectation,
+\begin{align*}
+    \mathbb{E}[\widehat{p}]
+    &= 
+    \mathbb{E}\!\left[ \frac{1}{k} \sum_{j=1}^k X_j \right] \\[6pt]
+    &= 
+    \frac{1}{k} \sum_{j=1}^k \mathbb{E}[X_j] \\[6pt]
+    &= 
+    \frac{1}{k} \sum_{j=1}^k p \\[6pt]
+    &= 
+    \frac{1}{k} \cdot k p \\[6pt]
+    &= p
+\end{align*}
+
+So the estimator has expectation equal to the true fraction:
+\[
+    \mathbb{E}[\widehat{p}] = p
+\]
+
+\bigskip
+
+\textbf{Variance of the Estimator:}
+
+Remember that each random variable $X_j$ is an indicator:
+\[
+    X_j =
+    \begin{cases}
+        1 & \text{if the $j$-th sampled element belongs to } S, \\
+        0 & \text{otherwise}
+    \end{cases}
+\]
+So,
+\[
+    \mathbb{P}(X_j = 1) = p
+    \qquad\text{and}\qquad
+    \mathbb{P}(X_j = 0) = 1 - p
+\]
+
+To get the variance of $X_j$ we can use the formula:
+\[
+    \mathrm{Var}(X_j)
+    = \mathbb{E}[X_j^2] - (\mathbb{E}[X_j])^2
+\]
+
+Since $X_j^2 = X_j$ (as the indicators are either 0 or 1):
+\[
+    \mathbb{E}[X_j^2]
+    = \mathbb{E}[X_j]
+\]
+
+And from the expectation calculation above we have:
+\[
+    \mathbb{E}[X_j] = p
+\]
+
+Putting this together:
+\[
+    \mathrm{Var}(X_j)
+    = p - p^2
+    = p(1-p).
+\]
+
+Because $p(1-p)$ is maximized when $p=\tfrac12$, we know that:
+\[
+    \mathrm{Var}(X_j) = p(1-p) \le \frac14
+\]
+
+\bigskip
+
+Remembering that the estimator is the mean of the $X_j$ in the reservoir:
+\[
+    \widehat{p} = \frac{1}{k} \sum_{j=1}^k X_j
+\]
+
+Remembering the two properties of variance:
+\begin{itemize}
+    \item For any random variable $Y$ and constant $c$,
+    \[
+        \mathrm{Var}(cY) = c^2 \, \mathrm{Var}(Y)
+    \]
+    \item For independent random variables $Y_1, Y_2$,
+    \[
+        \mathrm{Var}(Y_1 + Y_2 )
+        =
+        \mathrm{Var}(Y_1) + \mathrm{Var}(Y_2)
+    \]
+\end{itemize}
+
+
+As the $X_j$ are independent, we can use these properties to compute the variance of $\widehat{p}$:
+\[
+    \mathrm{Var}(\widehat{p})
+    =
+    \mathrm{Var}\!\left( \frac{1}{k} \sum_{j=1}^k X_j \right)
+    =
+    \frac{1}{k^2} \sum_{j=1}^k \mathrm{Var}(X_j)
+\]
+
+Using $\mathrm{Var}(X_j) \le 1/4$ for every $j$:
+\[
+    \mathrm{Var}(\widehat{p})
+    \le
+    \frac{1}{k^2} \cdot k \cdot \frac14
+    =
+    \frac{1}{4k}
+\]
+\newpage
+
+\textbf{Quality Analysis Using Chebyshev's Inequality:}
+
+Chebyshev's inquality is defined as:
+
+\[
+\mathbb{P}(|X - \mu| > \lambda) \leq \frac{\text{Var}(X)}{\lambda^2}
+\]
+
+Using Chebyshev’s inequality for our estimator $\widehat{p}$, we can substitute in our bounded variance (from above) and set $\lambda = \epsilon$:
+\[
+    \mathbb{P}\left( |\widehat{p} - p| > \epsilon \right)
+    \le
+    \frac{1}{4k\epsilon^2}
+\]
+
+To bound the probability of error, we set the right-hand side to be at most $\delta^\prime$:
+\[
+    \frac{1}{4k\epsilon^2} \le \delta^\prime
+\]
+
+Now we solve for $k$:
+\[
+    \frac{1}{4\epsilon^2 \delta^\prime} \le k
+\]
+
+Substituting this into the right-hand side:
+\[
+    \mathbb{P}\big(|\widehat{p} - p| > \epsilon \big)
+    \le \frac{1}{4 \cdot \left(\frac{1}{4 \epsilon^2 \delta^\prime}\right) \cdot \epsilon^2 }
+    = \frac{1}{ \frac{1}{\delta^\prime} } 
+    = \delta^\prime
+\]
+
+Therefore, with this choice of \(k\) we have:
+\[
+    \mathbb{P}\big(|\widehat{p} - p| > \epsilon \big) \le \delta^\prime
+\]
+
+Which we can rewrite as:
+\[
+    \mathbb{P}\big(|\widehat{p} - p| \le \epsilon \big) \ge 1 - \delta^\prime
+\]
+
+Now we can set \(1 - \delta^\prime = \delta\) to bound the probability of error by \(\delta\):
+\[
+    \mathbb{P}\big(|\widehat{p} - p| \le \epsilon \big) \ge \delta
+\]
+
+This proves that the estimator $\widehat{p}$ is within additive error $\epsilon$ of the true fraction $p$ with probability at least $\delta$.
+
+
+\bigskip
+
+\textbf{Space Complexity Analysis:}
+
+The algorithm stores:
+\begin{itemize}
+    \item A reservoir of size $k = \mathcal{O}\left(\frac{1}{4\epsilon^2 (1-\delta)}\right)$.
+    \item Each stored item in $k$ is from $[n]$ and requires $\mathcal{O}(\log n)$ bits.
+\end{itemize}
+
+Therefore, the total space used by the algorithm is:
+\[
+    \mathcal{O}\!\left( k \log n \right)
+    =
+    \mathcal{O}\!\left( \frac{1}{\epsilon^2 (1-\delta )} \log n \right)
+\]
+
+This space depends only on $\epsilon$ and $\delta$ (and $\log n$, but this is not tuneable), as required.
+
+\end{answer}
+
+\vspace{1em}
+
+\newpage
+
+\begin{question}[5 points]
+question here
+\end{question}
+
+\begin{answer}
+answer here
+\end{answer}
+
+\end{document}
+
+
+
+% Proof that reservoir sampling gives each element with equal probability, assuming that the stream length is larger than $k$:
+% \begin{itemize}
+%     \item Let $a_{m-1}$ be the $m-1$-th element in the stream, that has been processed.
+%     \item $a_{m}$ is the next element to be processed.
+%     \item From the algorithm definition above, we get:
+%       \begin{itemize}
+%         \item probability of $a_{m}$ being included in the reservoir = $k/m$
+%         \item probability of not being included = $1 - k/m$
+%       \end{itemize}
+%     \item hence, by definition, the probability of $a_{m}$ being in the reservoir after processing $m$ elements is $k/m$.
+%     \item For any other element $a_i$ where $i < m$, let $R_{m-1}$ be the reservoir after processing $m-1$ elements, and $R_{m}$ be the reservoir after processing $m$ elements:
+%       \begin{itemize}
+%         \item $\mathbb{P}[a_i \in R_{m}] = \mathbb{P}[a_i \in R_{m-1}] \cdot \mathbb{P}[a_{m} \text{ did not replace } a_i]$
+%         \item simplify the left term:
+%           \[
+%               \mathbb{P}[a_i \in R_{m-1}] = \frac{k}{m-1}
+%           \]
+%         \item simplify the right term:
+%         \begin{itemize}
+%           \item $\mathbb{P}[a_{m} \text{ did not replace } a_i] = \mathbb{P}[a_{m} \text{did not replace any element in } R_{m-1}] + \mathbb{P}[a_{m} \text{ replaced an element in } R_{m-1} \text{ but not } a_i]$        
+%         \end{itemize}
+%       \end{itemize}
+
+% \end{itemize}
+    
