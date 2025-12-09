@@ -95,9 +95,9 @@ The intuition behind my answer is to use reservoir sampling with $k$ samples to 
         \item If $C < k$, insert $a_i$ into $R$, and increment $C$ by 1.
         \item Otherwise:
           \begin{itemize}
-          \item Include $a_i$ in the reservoir $R$ with probability $k/i$.
+            \item Increment $C$ by 1.
+          \item Include $a_i$ in the reservoir $R$ with probability $k/C$.
           \item If included, replace a uniformly random element from $R$.
-          \item Increment $C$ by 1.
           \end{itemize}
       \end{itemize}
     This is standard reservoir sampling.
@@ -125,27 +125,27 @@ $k$ uniformly random elements from the stream.
 For each $j = 1, \ldots, k$, define the indicator variable
 \[
     X_j = \mathbf{1}\{ R_j \in S \},
-\],
+\]
 where $R_j$ is the $j$-th sampled item.
 
 Because reservoir sampling picks each stream element with equal probability,
 each $R_j$ is distributed exactly as a uniformly random stream element.
-So,
+So:
 \[
     \mathbb{P}(R_j \in S) = p,
 \]
-and therefore
+and therefore:
 \[
     \mathbb{E}[X_j] = 1 \cdot p + 0 \cdot (1-p) = p
 \]
 
-The estimator for the fraction is
+The estimator for the fraction is:
 \[
     \widehat{p}
     = \frac{1}{k} \sum_{j=1}^k X_j
 \]
 
-Using linearity of expectation,
+Using linearity of expectation:
 \begin{align*}
     \mathbb{E}[\widehat{p}]
     &= 
@@ -312,22 +312,25 @@ The algorithm stores:
 \begin{itemize}
     \item A reservoir of size $k = \mathcal{O}\left(\frac{1}{4\epsilon^2 (1-\delta)}\right)$.
     \item Each stored item in $k$ is from $[n]$ and requires $\mathcal{O}(\log n)$ bits.
+    \item The counter requires $\mathcal{O}(\log m)$ bits, where $m$ is the length of the stream in the question.
 \end{itemize}
 
 Therefore, the total space used by the algorithm is:
 \[
-    \mathcal{O}\!\left( k \log n \right)
+    \mathcal{O}\!\left( k \log n + \log m \right)
     =
-    \mathcal{O}\!\left( \frac{1}{\epsilon^2 (1-\delta )} \log n \right)
+    \mathcal{O}\!\left( \frac{1}{\epsilon^2 (1-\delta )} \log n + \log m \right)
 \]
 
-This space depends only on $\epsilon$ and $\delta$ (and $\log n$, but this is not tuneable), as required.
+This space depends only on $\epsilon$ and $\delta$ (and $\log n$ and $\log m$, but these are not tuneable), as required.
 
 \end{answer}
 
-\vspace{1em}
 
 \newpage
+
+\setcounter{questionnum}{0}      % because Question 1 was just printed
+\renewcommand{\thequestionnum}{2\alph{questionnum}} 
 
 \begin{question}[2 points]
 An independent set in a graph is a set of vertices which does not contain any edge. The Maximum Independent Set (MIS) problem is the problem of finding an independent set of maximum size in a given graph.
@@ -363,6 +366,99 @@ x_v =
 \[
 \text{Maximize } \sum_{v \in V} x_v
 \]
+
+\end{answer}
+
+\vspace{2em}
+
+\begin{question}[3 points]
+An independent set in a graph is a set of vertices which does not contain any edge. The Maximum Independent Set (MIS) problem is the problem of finding an independent set of maximum size in a given graph.
+
+Use the rounding technique to give a \(\left(2 - \frac{n}{\alpha}\right)\)-approximation algorithm for MIS, where $n$ is the number of vertices and $\alpha$ is the size of the largest independent set in a given graph.
+\end{question}
+
+\begin{answer}
+
+This is a relaxation-LP based approximation algorithm.
+
+We define the same graph \( G = (V, E) \), where \( V \) is the set of vertices and \( E \) is the set of edges of the graph.
+
+Except that now the variables \( x_v \) are allowed to take any value in the range \([0, 1]\).
+
+\textbf{Constraints:}
+
+\[\forall v \in V : \qquad 0 \leq x_v \leq 1\]
+
+\[\forall (u, v) \in E : \qquad x_u + x_v \leq 1\]
+
+\textbf{Objective Function:}
+\[\text{Maximize } \sum_{v \in V} x_v\]
+
+
+
+\textbf{Algorithm:}
+
+Let \( x^*_v \) be the optimal solution for each vertex \( v \in V \) to the relaxed LP.
+
+For each vertex \( v \in V \):
+\[
+\text{include } v \text{ in the independent set } I \text{ if } x_v^* > \frac{1}{2}
+\]
+
+Return the independent set \( I \).
+
+Because of the constraints, no two adjacent vertices can both have \( x_v^* > \frac{1}{2} \), so \( I \) is an independent set.
+
+\textbf{Approximation Analysis:}
+
+Let our optimal relaxation LP solution be $OPT_{RLP} = \sum_{v \in V} x_v^*$.
+
+split the vertexes according to their value \( x_v^* \):
+\[H = \{ v \in V : x_v^* > \frac{1}{2} \}\]
+\[L = \{ v \in V : x_v^* \leq \frac{1}{2} \}\]
+
+Using this split we can simplify $OPT_{RLP}$:
+\[OPT_{RLP} = \sum_{v \in H} x_v^* + \sum_{v \in L} x_v^*\]
+
+In the set \( H \), each $x_v^* \leq 1$ , so each vertex contributes at most 1 to the sum:
+\[\sum_{v \in H} x_v^* \leq |H|\]
+
+Similarly, in the set \( L \), each $x_v^* \leq \frac{1}{2}$ , so each vertex contributes at most \( \frac{1}{2} \) to the sum:
+\[\sum_{v \in L} x_v^* \leq \frac{1}{2} |L|\]
+
+Using these bounds for $H$ and $L$ we can bound $OPT_{RLP}$:
+\[OPT_{RLP} \leq |H| + \frac{1}{2} |L|\]
+
+As \( |H| + |L| = n \), we can substitute \( |L| = n - |H| \):
+\[OPT_{RLP} \leq |H| + \frac{1}{2} (n - |H|)\]
+\[OPT_{RLP} \leq |H| + \frac{n}{2} - \frac{1}{2} |H|\]
+\[OPT_{RLP} \leq \frac{n}{2} + \frac{1}{2} |H|\]
+
+We know that the true best solution is at most the optimal relaxed solution:
+\[\alpha \leq OPT_{RLP}\]
+
+Substituting our bound for $OPT_{RLP}$:
+\[\alpha \leq \frac{n}{2} + \frac{1}{2} |H|\]
+
+We can rearrange this to bound $|H|$:
+\[2\alpha - n \leq |H|\]
+
+In our algorithm, we choose all vertices in \( H \) to be in our independent set \( I \), so:
+\[|I| = |H|\]
+
+Thus, we have:
+\[|I| \geq 2\alpha - n\]
+
+Therefore, the approximation ratio is:
+\[
+\frac{|I|}{\alpha} \geq \frac{2\alpha - n}{\alpha}
+\]
+\[
+\frac{|I|}{\alpha} \geq \frac{\alpha(2 - \frac{n}{\alpha})}{\alpha}
+\]
+\[\frac{|I|}{\alpha} \geq 2 - \frac{n}{\alpha}\]
+
+This shows that our relaxed LP algorithm is a \( \left( 2 - \frac{n}{\alpha} \right) \)-approximation for the MIS problem.
 
 \end{answer}
 
